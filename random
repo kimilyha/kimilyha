@@ -6,7 +6,8 @@ from .. import loader
 
 @loader.tds
 class RandomMod(loader.Module):
-    """Модуль для генерации случайных чисел."""
+    """Модуль для генерации случайных чисел.
+    Используйте команду .random n1 n2 для генерации случайного числа между n1 и n2."""
 
     async def random_command(self, command):
         try:
@@ -36,7 +37,10 @@ class RandomMod(loader.Module):
         self.client = client
         self.me = await client.get_me()
 
-    async def watcher(self, message: Message):
+    async def watcher(self, event):
+        if not isinstance(event, Message):
+            return
+        message = event.message
         if message.sender_id == self.me.id:
             return
         if message.text.startswith('.random'):
