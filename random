@@ -33,5 +33,6 @@ async def main():
         result = await random_command(command)
         print(result)
 
-# Запускаем асинхронную функцию
-asyncio.run(main())
+# Создаем и запускаем цикл событий
+loop = asyncio.get_event_loop()
+loop.run_until_complete(main())
