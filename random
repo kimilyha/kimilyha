@@ -1,23 +1,37 @@
+import asyncio
 import random
 
-def random_int(a, b):
-    random_number = random.randint(a, b)
-    return random_number
-
-def random_float(a, b):
-    random_number = random.uniform(a, b)
-    return random_number
-
-def random_choice(sequence):
-    items = sequence.split(",")
-    random_item = random.choice(items)
-    return random_item
-
-def random_command(message, args):
+async def random_command(command):
     try:
-        a = int(args[0])
-        b = int(args[1])
-        random_number = random.randint(a, b)
-        message.reply(f"Случайное целое число: {random_number}")
+        # Разбиваем команду на части
+        parts = command.split()
+        
+        # Проверяем, что команда правильного формата и содержит два числа
+        if len(parts) != 3 or parts[0] != '.random':
+            return "Неправильный формат команды. Используйте: .random n1 n2"
+        
+        n1 = int(parts[1])
+        n2 = int(parts[2])
+        
+        # Проверяем, что первое число меньше второго
+        if n1 >= n2:
+            return "Первое число должно быть меньше второго."
+        
+        # Генерируем случайное число в заданном диапазоне
+        random_number = random.randint(n1, n2)
+        
+        return f"Случайное число между {n1} и {n2}: {random_number}"
+    
     except ValueError:
-        message.reply("Неверный формат команды. Используйте: .random (цифра1, цифра2)")
+        return "Пожалуйста, укажите два целых числа после команды .random"
+
+async def main():
+    while True:
+        command = input("Введите команду (.random n1 n2): ")
+        if command == "exit":
+            break
+        result = await random_command(command)
+        print(result)
+
+# Запускаем асинхронную функцию
+asyncio.run(main())
