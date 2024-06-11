@@ -7,7 +7,9 @@ from .. import loader
 @loader.tds
 class RandomMod(loader.Module):
     """Модуль для генерации случайных чисел.
-    Используйте команду .random n1 n2 для генерации случайного числа между n1 и n2."""
+    .random n1 n2 - Генерация рандомного числа от n1 до n2."""
+
+    strings = {"name": "Random"}
 
     async def random_command(self, command):
         try:
